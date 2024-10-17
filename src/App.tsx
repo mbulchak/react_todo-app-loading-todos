@@ -17,28 +17,14 @@ export const App: React.FC = () => {
 
   const filteredTodos = getFilteredTodosByStatus(todos, filter);
 
-  const resetError = () => setErrorMessage(Errors.DEFAULT);
-
   useEffect(() => {
     getTodos()
       .then(setTodos)
       .catch(() => setErrorMessage(Errors.LOADING));
   }, []);
 
-  useEffect(() => {
-    if (errorMessage) {
-      setTimeout(resetError, 3000);
-    }
-  }, [errorMessage]);
-
   const countActiveTodos = todos.reduce((accum, todo) => {
-    let countTodos = 0;
-
-    if (!todo.completed) {
-      countTodos += 1;
-    }
-
-    return accum + countTodos;
+    return !todo.completed ? accum + 1 : accum;
   }, 0);
 
   return (

@@ -12,6 +12,8 @@ export const Footer: React.FC<Props> = ({
   filter,
   setFilter,
 }) => {
+  const filterOptionName = Object.values(Filter);
+
   return (
     <footer className="todoapp__footer" data-cy="Footer">
       <span className="todo-count" data-cy="TodosCounter">
@@ -19,38 +21,26 @@ export const Footer: React.FC<Props> = ({
       </span>
 
       <nav className="filter" data-cy="Filter">
-        <a
-          href="#/"
-          className={cn('filter__link', {
-            selected: filter === Filter.All,
-          })}
-          data-cy="FilterLinkAll"
-          onClick={() => setFilter(Filter.All)}
-        >
-          {Filter.All}
-        </a>
+        {filterOptionName.map(filterValue => {
+          const filterActiveUrl =
+            filterValue === Filter.All
+              ? '#/'
+              : `#/${filterValue.toLowerCase()}`;
 
-        <a
-          href="#/active"
-          className={cn('filter__link', {
-            selected: filter === Filter.Active,
-          })}
-          data-cy="FilterLinkActive"
-          onClick={() => setFilter(Filter.Active)}
-        >
-          {Filter.Active}
-        </a>
-
-        <a
-          href="#/completed"
-          className={cn('filter__link', {
-            selected: filter === Filter.Completed,
-          })}
-          data-cy="FilterLinkCompleted"
-          onClick={() => setFilter(Filter.Completed)}
-        >
-          {Filter.Completed}
-        </a>
+          return (
+            <a
+              key={filterValue}
+              href={filterActiveUrl}
+              className={cn('filter__link', {
+                selected: filter === filterValue,
+              })}
+              data-cy={`FilterLink${filterValue}`}
+              onClick={() => setFilter(filterValue)}
+            >
+              {filterValue}
+            </a>
+          );
+        })}
       </nav>
 
       <button

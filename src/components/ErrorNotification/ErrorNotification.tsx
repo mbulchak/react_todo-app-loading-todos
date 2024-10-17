@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import { Errors } from '../../types/Errors';
 
 type Props = {
@@ -11,6 +11,18 @@ export const ErrorNotification: React.FC<Props> = ({
   errorMessage,
   setErrorMessage,
 }) => {
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if (errorMessage) {
+      timer = setTimeout(() => setErrorMessage(Errors.DEFAULT), 3000);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [setErrorMessage, errorMessage]);
+
   return (
     <div
       data-cy="ErrorNotification"
